@@ -21,7 +21,7 @@ void display() {
         glVertex2f(ballX - BALL_SIZE, ballY + BALL_SIZE); // Esquina superior izquierda.
     glEnd();
 
-    // Paleta Izquierda
+    // Paleta Izquierda 
     glBegin(GL_QUADS);
         glVertex2f(-WINDOW_WIDTH / 2 + 20, paddleLeftY - PADDLE_HEIGHT / 2);
         glVertex2f(-WINDOW_WIDTH / 2 + 20 + PADDLE_WIDTH, paddleLeftY - PADDLE_HEIGHT / 2);
@@ -40,6 +40,39 @@ void display() {
     glFlush();
 }
 
+void keyPressed(int key, int x, int y) {
+    const float SPEED = 20.0f;  
+
+    if (key == GLUT_KEY_UP) {  // Flecha arriba
+        if (paddleRightY + PADDLE_HEIGHT / 2 < WINDOW_HEIGHT / 2) {
+            paddleRightY += SPEED;
+        }
+    } else if (key == GLUT_KEY_DOWN) {  // Flecha abajo
+        if (paddleRightY - PADDLE_HEIGHT / 2 > -WINDOW_HEIGHT / 2) {
+            paddleRightY -= SPEED;
+        }
+    }
+
+    glutPostRedisplay();  
+}
+
+void keyPressedPlayer2(unsigned char key, int x, int y) {
+    const float SPEED = 20.0f;
+
+    if (key == 'w' || key == 'W') {  
+        if (paddleLeftY + PADDLE_HEIGHT / 2 < WINDOW_HEIGHT / 2) {
+            paddleLeftY += SPEED;
+        }
+    } else if (key == 's' || key == 'S') {  
+        if (paddleLeftY - PADDLE_HEIGHT / 2 > -WINDOW_HEIGHT / 2) {
+            paddleLeftY -= SPEED;
+        }
+    }
+
+    glutPostRedisplay();  
+}
+
+
 void initOpenGL() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -53,6 +86,9 @@ int main(int argc, char** argv) {
     glutCreateWindow("Pong OpenGL");
     initOpenGL();
     glutDisplayFunc(display);
+    glutSpecialFunc(keyPressed);       
+    glutKeyboardFunc(keyPressedPlayer2); 
     glutMainLoop();
+
     return 0;
 }
